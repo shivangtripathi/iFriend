@@ -12,16 +12,16 @@ import {
     Landing,
 
 } from './screens';
-
+import Tabs from './navigation/bottomnavigation';
 const Stack = createNativeStackNavigator();
 
 
 function BaseStack() {
     return (
-        <Stack.Navigator screenOptions={{ gestureEnabled: true }} initialRouteName="Landing">
+        <Stack.Navigator screenOptions={{ gestureEnabled: true }} initialRouteName="Home">
             <Stack.Screen
                 name="Home"
-                component={Home}
+                component={Tabs}
                 options={{ headerShown: true, animationEnabled: false ,animationTypeForReplace:'pop',title:''}}
             />
             <Stack.Screen

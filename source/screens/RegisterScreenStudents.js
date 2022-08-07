@@ -18,7 +18,9 @@ const RegisterScreenStudents = () => {
                 <CustomTextInput label={"Email"} onChangeText={(email) => setEmail(email)} value={ email }/>
                 <CustomTextInput label={"Password"} onChangeText={(pass) => setPassword(pass)} value={password} secure={ true} />
                 <CustomTextInput label={"Confirm Password"} onChangeText={(pass) => setcPassword(pass)} value={cpassword} secure={ true} />
-                <TouchableOpacity style={styles.registerButton} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.registerButton} activeOpacity={0.8} onPress={()=>{
+                    console.log("hello");
+                }}>
                     <Text style={styles.registerButtonText}>Register</Text>
                 </TouchableOpacity>
 

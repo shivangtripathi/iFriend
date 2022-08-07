@@ -16,7 +16,6 @@ export default CustomTextInput
 
 const localStyles = StyleSheet.create({
     label: {
-        marginBottom: 5,
         color: "#000",
         fontSize:14
     },
@@ -26,12 +25,10 @@ const localStyles = StyleSheet.create({
         alignItems: 'flex-start',
         marginHorizontal: 20,
         margin: 10,
-        paddingTop: 10,
         borderBottomColor: "#000",
         borderBottomWidth: StyleSheet.hairlineWidth+1,
     },
     textInput: {
-        marginBottom: 10,
         minWidth: WIDTH / 2,
         fontSize: 16,
         color:"#000"

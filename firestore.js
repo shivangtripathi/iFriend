@@ -1,1 +1,0 @@
-const firestoreForDefaultApp = firebase.firestore();

@@ -4,6 +4,10 @@ import Screen3 from './Screen3';
 import Landing from './Landing';
 import RegisterScreenInstructor from './RegisterScreenInstructor';
 import RegisterScreenStudents from './RegisterScreenStudents';
+import AddEventsScreen from './AddEventsScreen';
+import LoginScreenInstructor from './LoginScreenInstructor';
+import LoginScreenStudent from './LoginScreenStudent';
+
 
 export {
 	Home,
@@ -11,5 +15,8 @@ export {
 	Screen3,
 	Landing,
 	RegisterScreenStudents,
-	RegisterScreenInstructor
+	RegisterScreenInstructor,
+	AddEventsScreen,
+	LoginScreenStudent,
+	LoginScreenInstructor
 };

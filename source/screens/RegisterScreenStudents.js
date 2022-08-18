@@ -11,8 +11,12 @@ import React, {useState} from 'react';
 import CustomTextInput from '../components/CustomTextInput';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {change_variable} from '../actions';
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
-const RegisterScreenStudents = () => {
+const RegisterScreenStudents = props => {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
   const [cid, setcId] = useState('');
@@ -21,7 +25,16 @@ const RegisterScreenStudents = () => {
   const [cpassword, setcPassword] = useState('');
   const [batch, setBatch] = useState('');
 
+  const navigation = useNavigation();
+
   const handleRegister = async () => {
+    if (!email.endsWith('@thapar.edu')) {
+      Alert.alert('Invalid Email', 'use thapar provided email', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ,
+      ]);
+      return;
+    }
     try {
       auth()
         .createUserWithEmailAndPassword(email, password)
@@ -32,8 +45,22 @@ const RegisterScreenStudents = () => {
             roll: id,
             batch,
             user_id: uid,
+            displayName: 'student',
           };
-          firestore().collection('users').doc(user.uid).set(userDetail);
+          user.user.updateProfile({
+            displayName: 'student',
+          })
+          props.change_variable('user', userDetail);
+          props.change_variable('user_type', 'student');
+          firestore().collection('users').doc(user.user.uid).set(userDetail);
+        })
+        .then(async () => {
+          await AsyncStorage.setItem('authenicated', JSON.stringify(true));
+          await AsyncStorage.setItem(
+            'user',
+            JSON.stringify(auth().currentUser),
+          );
+          navigation.navigate('HomeStack');
         })
         .catch(err => Alert.alert(err));
     } catch (err) {
@@ -92,7 +119,10 @@ const RegisterScreenStudents = () => {
         </View>
         {/* login button */}
         <View>
-          <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.loginButton}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('LoginStudent')}>
             <Text style={styles.loginButtonText}>Already a member ? Login</Text>
           </TouchableOpacity>
         </View>
@@ -101,8 +131,6 @@ const RegisterScreenStudents = () => {
   );
 };
 
-export default RegisterScreenStudents;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f5f5f5',
@@ -110,7 +138,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   registerButton: {
-    backgroundColor: '#000',
+    backgroundColor: '#601a35',
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: 'center',
@@ -131,3 +159,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+const mapStateToProps = state => {
+  const {
+    user,
+    user_type,
+    authenticated,
+    batchCode,
+    subBatchCode,
+    enrollNumber,
+    loading,
+  } = state.variables;
+
+  return {
+    user,
+    user_type,
+    authenticated,
+    batchCode,
+    subBatchCode,
+    enrollNumber,
+    loading,
+  };
+};
+export default connect(mapStateToProps, {
+  change_variable,
+})(RegisterScreenStudents);

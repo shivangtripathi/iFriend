@@ -2,24 +2,23 @@ import {
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
   ScrollView,
-  TouchableOpacity,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomTextInput from '../components/CustomTextInput';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import {change_variable} from '../actions';
-import AsyncStorage from '@react-native-community/async-storage';
-import firestore from '@react-native-firebase/firestore';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-const LoginScreenStudent = (props) => {
+const LoginScreenInstructor = (props) => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
 
   const handleLogin = () => {
     if (!email.endsWith('@thapar.edu')) {
@@ -29,29 +28,32 @@ const LoginScreenStudent = (props) => {
       ]);
       return;
     }
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(user => {
-        firestore()
-          .collection('users')
-          .doc(user.user.uid)
-          .get()
-          .then(userData => {
-            let userDetails = userData.data();
-            props.change_variable('subBatch', userDetails.batch);
-            props.change_variable('name', userDetails.name);
-            props.change_variable('user_type', "student");
-            navigation.navigate('HomeStack');
-          });
-      })
-      .catch(err => console.log('error login student', err));
+    try {
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(user => {
+          firestore()
+            .collection('instructors')
+            .doc(user.user.uid)
+            .get()
+            .then(userData => {
+             let userDetails = userData.data();
+              props.change_variable('user_type', "instructor");
+              props.change_variable('name', userDetails.name);
+              navigation.navigate('HomeStack');
+            });
+        })
+        .catch(err => console.log('error login instructor', err));
+    } catch (err) {
+      console.log('error login instructor', err);
+    }
   };
   return (
     <View style={{flex: 1, overflow: 'hidden'}}>
       <ScrollView style={styles.container}>
         <CustomTextInput
           label={'Email'}
-          onChangeText={mail => setEmail(mail)}
+          onChangeText={email => setEmail(email)}
           value={email}
         />
         <CustomTextInput
@@ -72,7 +74,7 @@ const LoginScreenStudent = (props) => {
           <TouchableOpacity
             style={styles.loginButton}
             activeOpacity={0.8}
-            onPress={() => navigation.navigate('RegisterStudent')}>
+            onPress={() => navigation.navigate('RegisterInstructor')}>
             <Text style={styles.loginButtonText}>Not a member ? Register</Text>
           </TouchableOpacity>
         </View>
@@ -110,9 +112,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = state => {
   const {
-      
     user,
     user_type,
     authenticated,
@@ -120,11 +121,9 @@ const mapStateToProps = (state) =>{
     subBatchCode,
     enrollNumber,
     loading,
-
   } = state.variables;
 
   return {
-      
     user,
     user_type,
     authenticated,
@@ -132,11 +131,8 @@ const mapStateToProps = (state) =>{
     subBatchCode,
     enrollNumber,
     loading,
-
   };
-}
-export default connect( mapStateToProps, {
-
+};
+export default connect(mapStateToProps, {
   change_variable,
-
-} )( LoginScreenStudent );
+})(LoginScreenInstructor);

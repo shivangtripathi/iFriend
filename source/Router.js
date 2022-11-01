@@ -12,6 +12,7 @@ import {
   Landing,
   Screen2,
   Screen3,
+  Screen4,
   AddEventsScreen,
   LoginScreenInstructor,
   LoginScreenStudent
@@ -166,6 +167,21 @@ function HomeTabs() {
         }}
         name="Groups"
         component={Screen2}
+      />
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({focused, tintColor}) => {
+            return (
+              <MaterialCommunityIcons
+                name="google-maps"
+                size={24}
+                color={focused ? '#fff' : '#000'}
+              />
+            );
+          },
+        }}
+        name="Maps"
+        component={Screen4}
       />
       <Tab.Screen
         options={{

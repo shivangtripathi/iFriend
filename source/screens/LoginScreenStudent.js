@@ -38,7 +38,7 @@ const LoginScreenStudent = (props) => {
           .get()
           .then(userData => {
             let userDetails = userData.data();
-            props.change_variable('subBatch', userDetails.batch);
+            props.change_variable('subBatchCode', userDetails.batch);
             props.change_variable('name', userDetails.name);
             props.change_variable('user_type', "student");
             navigation.navigate('HomeStack');

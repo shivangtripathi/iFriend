@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomTextInput from '../components/CustomTextInput';
@@ -16,6 +17,8 @@ import firestore, { firebase } from '@react-native-firebase/firestore';
 import {connect} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
+
+const WIDTH = Dimensions.get('window').width;
 
 const AddEventsScreen = props => {
   const navigation = useNavigation();
@@ -56,8 +59,8 @@ const AddEventsScreen = props => {
 
   function onMultiChange(item) {
     if (isRepeated) {
-      if (selectedDays.indexOf(item) != -1) {
-        let newDaysState = selectedDays.filter(itm => itm.id != item.id);
+      if (selectedDays.indexOf(item) !== -1) {
+        let newDaysState = selectedDays.filter(itm => itm.id !== item.id);
         setSelectedDays(newDaysState);
       } else {
         setSelectedDays([...selectedDays, item]);
@@ -145,10 +148,11 @@ const AddEventsScreen = props => {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginLeft: index % 3 == 0 ? 0 : 10,
+                    width:(WIDTH/3),
+                    justifyContent:'space-between'
                   }}
                   key={index}>
-                  <Text>{item.item}</Text>
+                  <Text style={{color: '#000',fontSize:14,marginLeft:10}}>{item.item}</Text>
                   <Checkbox
                     status={
                       selectedDays.indexOf(item) != -1 ? 'checked' : 'unchecked'

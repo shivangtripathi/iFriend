@@ -45,7 +45,7 @@ const Landing = (props) => {
         Welcome to {'\n'}
         <Text
           style={{
-            color: 'red',
+            color: '#601a35',
             fontSize: 24,
             fontWeight: 'bold',
             marginTop: 10,

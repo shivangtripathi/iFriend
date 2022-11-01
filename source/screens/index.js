@@ -7,7 +7,7 @@ import RegisterScreenStudents from './RegisterScreenStudents';
 import AddEventsScreen from './AddEventsScreen';
 import LoginScreenInstructor from './LoginScreenInstructor';
 import LoginScreenStudent from './LoginScreenStudent';
-
+import Screen4 from './Screen4';
 
 export {
 	Home,
@@ -18,5 +18,6 @@ export {
 	RegisterScreenInstructor,
 	AddEventsScreen,
 	LoginScreenStudent,
-	LoginScreenInstructor
+	LoginScreenInstructor,
+	Screen4
 };
